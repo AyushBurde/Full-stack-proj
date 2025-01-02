@@ -11,8 +11,9 @@ const Listing = require("./models/listing.js");
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const path = require("path");
 const methodOverride = require("method-override");
-const ejsMate = require("ejs-mate")
-const wrapAsync =require("./utils/wrapAsync.js")
+const ejsMate = require("ejs-mate");
+const wrapAsync =require("./utils/wrapAsync.js");
+const ExpressError = require("./utils/ExpressError.js");
 const Review = require("./models/review.js");
 const flash = require("connect-flash")
 const session = require("express-session");
@@ -24,7 +25,7 @@ const {isLoggedIn, isOwner, validatelisting} = require("./middlewares.js")
 const userRouter =require("./routes/user.js");
 const {validateReview} = require("./middlewares.js")
 const {listingSchema , reviewSchema} = require("./schema.js")
-const ExpressError = require("./utils/ExpressError.js")
+
 const listingController = require("./controllers/listing.js")
 const multer = require("multer");
 const {storage}  = require("./CloudConflict.js");
@@ -250,11 +251,11 @@ app.delete(
 
 app.all("*" , ( req, res, next)=> {
  next(new ExpressError(404, "Page Not Found!"));
-})
+});
 
-app.use ((err, req, next)=> {
-   let { statusCode=500 , message="something went wrong " } = err;
-   res.status(statusCode).render("error.ejs", {message});
+app.use ((err, req, res , next)=> {
+   let { statusCode=500 , message } = err;
+   res.status(statusCode).send(message);
   // res.status(statusCode).send(message);
 })
 

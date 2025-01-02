@@ -248,7 +248,9 @@ app.delete(
 
 
 
-
+app.all("*" , ( req, res, next)=> {
+ next(new ExpressError(404, "Page Not Found!"));
+})
 
 app.use ((err, req, next)=> {
    let { statusCode=500 , message="something went wrong " } = err;

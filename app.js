@@ -248,15 +248,9 @@ app.delete(
 
 
 
-app.all("*" , ( req, res, next)=> {
- next(new ExpressError(404, "Page Not Found!"));
-})
 
-app.use ((err, req, next)=> {
-   let { statusCode=500 , message="something went wrong " } = err;
-   res.status(statusCode).render("error.ejs", {message});
-  // res.status(statusCode).send(message);
-})
+
+
 
 app.listen (8080, ()=>{
     console.log("server is listening to port 8080");
